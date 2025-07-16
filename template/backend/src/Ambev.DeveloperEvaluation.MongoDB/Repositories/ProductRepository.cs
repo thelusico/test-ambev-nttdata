@@ -1,6 +1,7 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Enums;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -10,13 +11,16 @@ using System.Threading.Tasks;
 
 namespace Ambev.DeveloperEvaluation.MongoDB.Repositories
 {
-    public class ProductRepository: IProductRepository
+    public class ProductRepository : IProductRepository
     {
         private readonly IMongoCollection<Product> _products;
 
-        public ProductRepository(IMongoDatabase database)
+        public ProductRepository(IOptions<MongoDbSettings> mongoSettings)
         {
-            _products = database.GetCollection<Product>("products");
+            var mongoClient = new MongoClient(mongoSettings.Value.ConnectionString);
+            var mongoDatabase = mongoClient.GetDatabase(mongoSettings.Value.DatabaseName); 
+
+            _products = mongoDatabase.GetCollection<Product>("Products");
         }
 
         public async Task<Product> CreateAsync(Product product)
@@ -31,7 +35,16 @@ namespace Ambev.DeveloperEvaluation.MongoDB.Repositories
 
         public async Task<IEnumerable<Product>> GetAllAsync()
         {
-            return await _products.Find(_ => true).ToListAsync();
+
+            try
+            {
+                return await _products.Find(_ => true).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
         }
 
         public async Task<IEnumerable<Product>> GetByCategoryAsync(ProductCategory category)

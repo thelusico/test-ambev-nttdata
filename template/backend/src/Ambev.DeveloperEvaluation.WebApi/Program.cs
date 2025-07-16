@@ -59,26 +59,15 @@ public class Program
             builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
             // MongoDB
+
             builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDB"));
-
-            builder.Services.AddSingleton<IMongoClient>(serviceProvider =>
-            {
-                var settings = serviceProvider.GetRequiredService<IOptions<MongoDbSettings>>().Value;
-                return new MongoClient(settings.ConnectionString);
-            });
-
-            builder.Services.AddScoped(serviceProvider =>
-            {
-                var client = serviceProvider.GetRequiredService<IMongoClient>();
-                var settings = serviceProvider.GetRequiredService<IOptions<MongoDbSettings>>().Value;
-                return client.GetDatabase(settings.DatabaseName);
-            });
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
             ProductConfiguration.Configure();
 
             //End MongoDb
 
-            builder.Services.AddScoped<IProductRepository, ProductRepository>();
+           
 
 
             var app = builder.Build();
