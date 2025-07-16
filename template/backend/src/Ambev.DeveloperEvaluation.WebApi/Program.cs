@@ -3,11 +3,17 @@ using Ambev.DeveloperEvaluation.Common.HealthChecks;
 using Ambev.DeveloperEvaluation.Common.Logging;
 using Ambev.DeveloperEvaluation.Common.Security;
 using Ambev.DeveloperEvaluation.Common.Validation;
+using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.IoC;
+using Ambev.DeveloperEvaluation.MongoDB;
+using Ambev.DeveloperEvaluation.MongoDB.Mapping;
+using Ambev.DeveloperEvaluation.MongoDB.Repositories;
 using Ambev.DeveloperEvaluation.ORM;
 using Ambev.DeveloperEvaluation.WebApi.Middleware;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 using Serilog;
 
 namespace Ambev.DeveloperEvaluation.WebApi;
@@ -51,6 +57,29 @@ public class Program
             });
 
             builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
+            // MongoDB
+            builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDB"));
+
+            builder.Services.AddSingleton<IMongoClient>(serviceProvider =>
+            {
+                var settings = serviceProvider.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+                return new MongoClient(settings.ConnectionString);
+            });
+
+            builder.Services.AddScoped(serviceProvider =>
+            {
+                var client = serviceProvider.GetRequiredService<IMongoClient>();
+                var settings = serviceProvider.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+                return client.GetDatabase(settings.DatabaseName);
+            });
+
+            ProductConfiguration.Configure();
+
+            //End MongoDb
+
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
 
             var app = builder.Build();
             app.UseMiddleware<ValidationExceptionMiddleware>();
