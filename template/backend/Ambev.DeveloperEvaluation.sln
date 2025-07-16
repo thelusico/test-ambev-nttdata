@@ -54,7 +54,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ambev.DeveloperEvaluation.MongoDB", "..\Ambev.DeveloperEvaluation.MongoDB\Ambev.DeveloperEvaluation.MongoDB.csproj", "{09BB44BA-0AFC-4DE3-B15A-A51F49C4376F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ambev.DeveloperEvaluation.MongoDB", "src\Ambev.DeveloperEvaluation.MongoDB\Ambev.DeveloperEvaluation.MongoDB.csproj", "{09BB44BA-0AFC-4DE3-B15A-A51F49C4376F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
