@@ -58,17 +58,17 @@ public class Program
 
             builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
-            // MongoDB
-
+            //MongoDB
             builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDB"));
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
+            builder.Services.AddScoped<ISalesCartRepository, SalesCartRepository>();
 
             ProductConfiguration.Configure();
-
+            SalesCartConfiguration.Configure();
+            SalesCartItemConfiguration.Configure();
+            CustomerInfoConfiguration.Configure();
+            BranchInfoConfiguration.Configure();
             //End MongoDb
-
-           
-
 
             var app = builder.Build();
             app.UseMiddleware<ValidationExceptionMiddleware>();
