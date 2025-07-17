@@ -8,9 +8,9 @@ namespace Ambev.DeveloperEvaluation.Domain.ValueObjects
 {
     public class BranchInfo
     {
-        public Guid BranchId { get; private set; }
-        public string Name { get; private set; }
-        public string Location { get; private set; }
+        public Guid BranchId { get; set; }
+        public string Name { get; set; }
+        public string Location { get; set; }
 
         public BranchInfo(Guid branchId, string name, string location)
         {

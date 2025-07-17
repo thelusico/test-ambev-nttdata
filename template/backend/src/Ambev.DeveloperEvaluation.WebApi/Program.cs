@@ -70,6 +70,8 @@ public class Program
             BranchInfoConfiguration.Configure();
             //End MongoDb
 
+
+
             var app = builder.Build();
             app.UseMiddleware<ValidationExceptionMiddleware>();
 
