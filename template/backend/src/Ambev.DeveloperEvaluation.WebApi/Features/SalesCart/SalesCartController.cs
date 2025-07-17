@@ -9,6 +9,13 @@ using Ambev.DeveloperEvaluation.Application.SalesCart.CreateSalesCart;
 using Ambev.DeveloperEvaluation.Application.SalesCart.ModifySalesCart.Results;
 using Ambev.DeveloperEvaluation.WebApi.Features.SalesCart.ModifySalesCart;
 using Ambev.DeveloperEvaluation.Application.SalesCart.ModifySalesCart;
+using Ambev.DeveloperEvaluation.Application.SalesCart.GetSalesCart.Results;
+using Ambev.DeveloperEvaluation.Application.SalesCart.GetSalesCart;
+using Ambev.DeveloperEvaluation.WebApi.Features.SalesCart.GetSalesCart;
+using Ambev.DeveloperEvaluation.WebApi.Features.Users.GetUser;
+using Ambev.DeveloperEvaluation.WebApi.Features.SalesCart.CancelSalesCart;
+using Ambev.DeveloperEvaluation.Application.SalesCart.CancelSalesCart;
+using Ambev.DeveloperEvaluation.Application.SalesCart.CancelSalesCart.Results;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.SalesCart
 {
@@ -82,7 +89,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.SalesCart
                     Success = false,
                 });
             }
-            catch (Exception ex)
+            catch
             {
                 return StatusCode(500, new ApiResponse
                 {
@@ -113,7 +120,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.SalesCart
             try
             {
 
-                var command = _mapper.Map<ModifySalesCartCommand>(request);               
+                var command = _mapper.Map<ModifySalesCartCommand>(request);
                 var result = await _mediator.Send(command);
 
                 return Created(string.Empty,
@@ -149,7 +156,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.SalesCart
                     Success = false,
                 });
             }
-            catch (Exception ex)
+            catch
             {
                 return StatusCode(500, new ApiResponse
                 {
@@ -157,6 +164,92 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.SalesCart
                     Success = false,
                 });
             }
+        }
+        /// <summary>
+        /// Get a Sale Cart
+        /// </summary>
+        /// <param name="salesCartId">SalesCart Id</param>
+        /// <returns>SalesCart Data</returns>
+        /// <response code="200">Sales Cart Data</response>
+        /// <response code="400">Invalid request data</response>
+        /// <response code="404">Sales Cart, customer, branch or product not found</response>
+        /// <response code="500">Internal server error</response>
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(ApiResponseWithData<ModifySalesCartResult>), StatusCodes.Status200OK)]        
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<ApiResponseWithData<GetSalesCartResult>>> GetSalesCart(
+            [FromRoute] Guid id)
+        {
+            try
+            {
+                var getRequest = new GetSalesCartRequest { SalesCartId = id };
+                var command = _mapper.Map<GetSalesCartCommand>(getRequest);
+                var result = await _mediator.Send(command);
+
+                return Ok(new ApiResponseWithData<GetSalesCartResult>
+                {
+                    Success = true,
+                    Message = "SalesCart retrieved successfully",
+                    Data = result
+                });               
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new ApiResponse
+                {
+                    Message = ex.Message,
+                    Success = false,
+                });
+            }
+            catch
+            {
+                return StatusCode(500, new ApiResponse
+                {
+                    Message = "An unexpected error occurred",
+                    Success = false,
+                });
+            }
+
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(ApiResponseWithData<ModifySalesCartResult>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<ApiResponseWithData<GetSalesCartResult>>> CancelSalesCart(
+            [FromRoute] Guid id)
+        {
+            try
+            {
+                var getRequest = new CancelSalesCartRequest { SalesCartId = id };
+                var command = _mapper.Map<CancelSalesCartCommand>(getRequest);
+                var result = await _mediator.Send(command);
+
+                return Ok(new ApiResponseWithData<CancelSalesCartResult>
+                {
+                    Success = true,
+                    Message = "SalesCart canceled!",
+                    Data = result
+                });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new ApiResponse
+                {
+                    Message = ex.Message,
+                    Success = false,
+                });
+            }
+            catch
+            {
+                return StatusCode(500, new ApiResponse
+                {
+                    Message = "An unexpected error occurred",
+                    Success = false,
+                });
+            }
+
         }
     }
 }

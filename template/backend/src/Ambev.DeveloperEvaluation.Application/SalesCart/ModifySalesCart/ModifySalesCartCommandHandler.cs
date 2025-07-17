@@ -41,9 +41,12 @@ namespace Ambev.DeveloperEvaluation.Application.SalesCart.ModifySalesCart
                 var salesCartToModify = await _salesCartRepository.GetByIdAsync(request.SalesCartId);
 
                 if (salesCartToModify == null)
-                    throw new KeyNotFoundException($"Sales Cart with Id {request.SalesCartId} was not found!");                
+                    throw new KeyNotFoundException($"Sales Cart with Id {request.SalesCartId} was not found!");
 
-                if(salesCartToModify.Customer.UserId != request.Customer)
+                if (salesCartToModify.IsCancelled)
+                    throw new InvalidOperationException($"Sales Cart with Id {request.SalesCartId} is canceled, modification is not allowed");
+
+                if (salesCartToModify.Customer.UserId != request.Customer)
                 {
                     var newCustomer = await _userRepository.GetByIdAsync(request.Customer, cancellationToken);
 

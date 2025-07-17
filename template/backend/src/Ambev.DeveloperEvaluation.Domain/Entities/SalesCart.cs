@@ -16,8 +16,8 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         public BranchInfo Branch { get; set; }
         public List<SalesCartItem> Items { get; set; }
         public decimal TotalAmount { get; set; }
-        public bool IsCancelled { get; private set; }
-        public DateTime? CancelledAt { get; private set; }
+        public bool IsCancelled { get; set; }
+        public DateTime? CancelledAt { get; set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime? UpdatedAt { get; set; }
 
