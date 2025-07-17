@@ -61,7 +61,6 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.SalesCart
 
             try
             {
-
                 var validator = new CreateSalesCartRequestValidator();
                 var validationResult = await validator.ValidateAsync(request);
 

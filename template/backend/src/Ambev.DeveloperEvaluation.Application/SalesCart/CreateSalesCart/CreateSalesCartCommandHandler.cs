@@ -6,6 +6,8 @@ using Ambev.DeveloperEvaluation.Domain.Services;
 using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 using AutoMapper;
 using MediatR;
+using Microsoft.Extensions.Logging;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +27,6 @@ namespace Ambev.DeveloperEvaluation.Application.SalesCart.CreateSalesCart
         private readonly IPricingService _pricingService;
 
         private readonly IMapper _mapper;
-
         public CreateSalesCartCommandHandler(
             IProductRepository productRepository,
             IUserRepository userRepository,
@@ -33,6 +34,7 @@ namespace Ambev.DeveloperEvaluation.Application.SalesCart.CreateSalesCart
             ISalesNumberGeneratorService salesNumberGeneratorService,
             IBranchService branchService,
             IPricingService pricingService,
+            ILogger<CreateSalesCartCommandHandler> logger,
             IMapper mapper)
         {
             _productRepository = productRepository;
@@ -50,16 +52,26 @@ namespace Ambev.DeveloperEvaluation.Application.SalesCart.CreateSalesCart
         {
             try
             {
+
+                Log.Information($"[CreateSalesCartCommand].Handle => Handle Initialize, creating SalesCart for {request.Customer}");
+
                 var user = await _userRepository.GetByIdAsync(request.Customer);
                 if (user == null)
+                {
+                    Log.Error($"[CreateSalesCartCommand].Handle => User with ID {request.Customer} not found");
                     throw new ArgumentException($"User with ID {request.Customer} not found");
+                }                  
 
                 var customer = new CustomerInfo(user.Id, user.Username, user.Email);
 
                 var branch = await _branchService.GetByIdAsync(request.Branch);
 
                 if (branch == null)
+                {
+                    Log.Error($"[CreateSalesCartCommand].Handle => Branch with ID {request.Branch} not found");
                     throw new ArgumentException($"Branch with ID {request.Branch} not found");
+                }
+                   
 
                 var branchInfo = new BranchInfo(branch.BranchId, branch.Name, branch.Location);
 
@@ -70,7 +82,10 @@ namespace Ambev.DeveloperEvaluation.Application.SalesCart.CreateSalesCart
                     var product = await _productRepository.GetByIdAsync(itemDto.ProductId);
 
                     if (product == null)
+                    {
+                        Log.Error($"[CreateSalesCartCommand].Handle => Product with ID {itemDto.ProductId} not found");
                         throw new ArgumentException($"Product with ID {itemDto.ProductId} not found");
+                    }                   
 
                     // Criar item com dados denormalizados do produto
                     var item = new SalesCartItem(
@@ -83,11 +98,15 @@ namespace Ambev.DeveloperEvaluation.Application.SalesCart.CreateSalesCart
                     );
 
                     items.Add(item);
-                }               
-                
+                }
+
+                Log.Information($"[CreateSalesCartCommand].Handle => Validate Item Quantity for customer: {request.Customer}");
+
                 var fullCartAmmount = _pricingService.ValidateQuantityAndApplyDiscounts(items);
 
                 var saleNumber = _salesNumberGenerator.GenerateUniqueSaleNumber();
+
+                Log.Information($"[CreateSalesCartCommand].Handle => Sale Number: {saleNumber}");
 
                 var salesCart = new Domain.Entities.SalesCart(saleNumber, customer, branchInfo, items);
 
@@ -95,13 +114,15 @@ namespace Ambev.DeveloperEvaluation.Application.SalesCart.CreateSalesCart
 
                 var createdSalesCart = await _salesCartRepository.CreateAsync(salesCart);
 
+                Log.Information($"[CreateSalesCartCommand].Handle => SaleCart Created: {createdSalesCart.Id}");
+
                 return _mapper.Map<CreateSalesCartResult>(createdSalesCart);
 
             }
             catch
             {
                 throw;
-            }            
+            }
 
         }
     }

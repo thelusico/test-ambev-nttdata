@@ -1,5 +1,6 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Services;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +52,8 @@ namespace Ambev.DeveloperEvaluation.Application.Services.Pricing
 
                 if (totalQtdeByCategory > CategoryQuantityLimit)
                 {
+                    Log.Error($"[PricingService].IsCategoryQuantityAllowed => It's not possible to sell above {CategoryQuantityLimit}");
+
                     throw new InvalidOperationException(
                       $"It's not possible to sell above {CategoryQuantityLimit} items per category. " +
                       $"Category '{categoryGroup.Key}' has {totalQtdeByCategory} items.");
