@@ -8,9 +8,9 @@ namespace Ambev.DeveloperEvaluation.Domain.ValueObjects
 {
     public class CustomerInfo
     {
-        public Guid UserId { get; private set; } // External Identity
-        public string Username { get; private set; } // Denormalização
-        public string Email { get; private set; } // Denormalização
+        public Guid UserId { get; private set; }
+        public string Username { get; private set; } 
+        public string Email { get; private set; }
 
         public CustomerInfo(Guid userId, string username, string email)
         {

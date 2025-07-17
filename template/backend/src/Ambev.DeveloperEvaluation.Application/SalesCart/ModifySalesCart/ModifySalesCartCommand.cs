@@ -1,7 +1,11 @@
 ﻿
+using Ambev.DeveloperEvaluation.Application.SalesCart.CreateSalesCart.Results;
+using Ambev.DeveloperEvaluation.Application.SalesCart.ModifySalesCart.Results;
+using MediatR;
+
 namespace Ambev.DeveloperEvaluation.Application.SalesCart.ModifySalesCart
 {
-    public class ModifySalesCartCommand
+    public class ModifySalesCartCommand : IRequest<ModifySalesCartResult>
     {
         public Guid SalesCartId { get; set; }
         public Guid Customer { get; set; }

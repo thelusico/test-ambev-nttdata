@@ -12,14 +12,14 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         public Guid Id { get; private set; }
         public string SaleNumber { get; private set; }
         public DateTime SaleDate { get; private set; }
-        public CustomerInfo Customer { get; private set; }
-        public BranchInfo Branch { get; private set; }
-        public List<SalesCartItem> Items { get; private set; }
+        public CustomerInfo Customer { get; set; }
+        public BranchInfo Branch { get; set; }
+        public List<SalesCartItem> Items { get; set; }
         public decimal TotalAmount { get; set; }
         public bool IsCancelled { get; private set; }
         public DateTime? CancelledAt { get; private set; }
         public DateTime CreatedAt { get; private set; }
-        public DateTime? UpdatedAt { get; private set; }
+        public DateTime? UpdatedAt { get; set; }
 
         public SalesCart(string saleNumber, CustomerInfo customer, BranchInfo branch, List<SalesCartItem> items)
         {

@@ -6,6 +6,8 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Ambev.DeveloperEvaluation.Application.SalesCart.CreateSalesCart;
+using Ambev.DeveloperEvaluation.Application.SalesCart.ModifySalesCart.Results;
+using Ambev.DeveloperEvaluation.WebApi.Features.SalesCart.ModifySalesCart;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.SalesCart
 {
@@ -24,7 +26,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.SalesCart
         {
             _mediator = mediator;
             _mapper = mapper;
-            
+
         }
 
 
@@ -53,18 +55,18 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.SalesCart
                 // Send command through mediator
                 var result = await _mediator.Send(command);
 
-                return Created(string.Empty,                   
+                return Created(string.Empty,
                     new ApiResponseWithData<CreateSalesCartResult>
                     {
                         Success = true,
                         Message = "Sales cart created successfully.",
                         Data = result,
-                    }              
+                    }
                 );
 
             }
             catch (ArgumentException ex)
-            {                
+            {
                 return BadRequest(new ApiResponse
                 {
                     Message = ex.Message,
@@ -89,5 +91,30 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.SalesCart
             }
 
         }
+
+        /// <summary>
+        /// Modifys a sales cart
+        /// </summary>
+        /// <param name="request">Sales cart modified data</param>
+        /// <returns>Modify sales cart with calculated prices and discounts</returns>
+        /// <response code="201">Sales cart modified successfully</response>
+        /// <response code="400">Invalid request data</response>
+        /// <response code="404">Sales Cart, customer, branch or product not found</response>
+        /// <response code="500">Internal server error</response>
+        [HttpPut]
+        [ProducesResponseType(typeof(ApiResponseWithData<ModifySalesCartResult>), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<ApiResponseWithData<CreateSalesCartResult>>> ModifySalesCart(
+            [FromBody] ModifySalesCartRequest request)
+        {
+
+
+            
+
+
+        }
+
     }
 }
