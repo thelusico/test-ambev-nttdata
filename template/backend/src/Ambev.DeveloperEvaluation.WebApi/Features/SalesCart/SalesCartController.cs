@@ -16,6 +16,9 @@ using Ambev.DeveloperEvaluation.WebApi.Features.Users.GetUser;
 using Ambev.DeveloperEvaluation.WebApi.Features.SalesCart.CancelSalesCart;
 using Ambev.DeveloperEvaluation.Application.SalesCart.CancelSalesCart;
 using Ambev.DeveloperEvaluation.Application.SalesCart.CancelSalesCart.Results;
+using System.Threading;
+using System.Net;
+using FluentValidation;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.SalesCart
 {
@@ -58,6 +61,13 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.SalesCart
 
             try
             {
+
+                var validator = new CreateSalesCartRequestValidator();
+                var validationResult = await validator.ValidateAsync(request);
+
+                if (!validationResult.IsValid)
+                    return BadRequest(validationResult.Errors);
+
                 var command = _mapper.Map<CreateSalesCartCommand>(request);
 
                 // Send command through mediator
@@ -119,6 +129,12 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.SalesCart
         {
             try
             {
+
+                var validator = new ModifySalesCartRequestValidator();
+                var validationResult = await validator.ValidateAsync(request);
+
+                if (!validationResult.IsValid)
+                    return BadRequest(validationResult.Errors);
 
                 var command = _mapper.Map<ModifySalesCartCommand>(request);
                 var result = await _mediator.Send(command);
@@ -184,6 +200,13 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.SalesCart
             try
             {
                 var getRequest = new GetSalesCartRequest { SalesCartId = id };
+
+                var validator = new GetSalesCartRequestValidator();
+                var validationResult = await validator.ValidateAsync(getRequest);
+                
+                if (!validationResult.IsValid)
+                    return BadRequest(validationResult.Errors);
+
                 var command = _mapper.Map<GetSalesCartCommand>(getRequest);
                 var result = await _mediator.Send(command);
 
@@ -222,8 +245,15 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.SalesCart
         {
             try
             {
-                var getRequest = new CancelSalesCartRequest { SalesCartId = id };
-                var command = _mapper.Map<CancelSalesCartCommand>(getRequest);
+                var cancelRequest = new CancelSalesCartRequest { SalesCartId = id };
+
+                var validator = new CancelSalesCartValidator();
+                var validationResult = await validator.ValidateAsync(cancelRequest);
+
+                if (!validationResult.IsValid)
+                    return BadRequest(validationResult.Errors);
+
+                var command = _mapper.Map<CancelSalesCartCommand>(cancelRequest);
                 var result = await _mediator.Send(command);
 
                 return Ok(new ApiResponseWithData<CancelSalesCartResult>
