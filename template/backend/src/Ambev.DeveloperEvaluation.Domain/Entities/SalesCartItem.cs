@@ -8,13 +8,13 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
 {
     public class SalesCartItem
     {
-        public Guid ProductId { get; private set; } // External Identity - referência ao Product domain
-        public string ProductTitle { get; private set; } // Denormalização - nome/título do produto
-        public string ProductCategory { get; private set; } // Denormalização - categoria para relatórios
-        public int Quantity { get; private set; }
-        public decimal UnitPrice { get; private set; }
-        public decimal Discount { get; private set; }
-        public decimal TotalAmount { get; private set; }
+        public Guid ProductId { get; set; } // External Identity - referência ao Product domain
+        public string ProductTitle { get; set; } // Denormalização - nome/título do produto
+        public string ProductCategory { get; set; } // Denormalização - categoria para relatórios
+        public int Quantity { get; set; }
+        public decimal UnitPrice { get; set; }
+        public decimal Discount { get; set; }
+        public decimal TotalAmount { get; set;}
 
         // Construtor para criação
         public SalesCartItem(Guid productId, string productTitle, string productCategory,
