@@ -12,6 +12,6 @@ namespace Ambev.DeveloperEvaluation.Domain.Services
         /// <summary>
         /// Aplica descontos baseados nas regras de quantidade
         /// </summary>
-        IEnumerable<SalesCartItem> ApplyQuantityDiscounts(IEnumerable<SalesCartItem> items);
+        decimal ValidateQuantityAndApplyDiscounts(IEnumerable<SalesCartItem> items);        
     }
 }

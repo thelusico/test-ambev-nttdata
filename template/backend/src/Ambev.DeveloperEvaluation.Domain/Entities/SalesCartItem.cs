@@ -8,15 +8,14 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
 {
     public class SalesCartItem
     {
-        public Guid ProductId { get; set; } // External Identity - referência ao Product domain
-        public string ProductTitle { get; set; } // Denormalização - nome/título do produto
-        public string ProductCategory { get; set; } // Denormalização - categoria para relatórios
+        public Guid ProductId { get; set; }
+        public string ProductTitle { get; set; } 
+        public string ProductCategory { get; set; }
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal Discount { get; set; }
         public decimal TotalAmount { get; set;}
-
-        // Construtor para criação
+       
         public SalesCartItem(Guid productId, string productTitle, string productCategory,
                        int quantity, decimal unitPrice, decimal discount = 0)
         {
@@ -39,8 +38,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
             Discount = discount;
             //TotalAmount = CalculateTotalAmount();
         }
-
-        // Construtor para reconstrução (MongoDB)
+       
         public SalesCartItem(Guid productId, string productTitle, string productCategory,
                        int quantity, decimal unitPrice, decimal discount, decimal totalAmount)
         {
@@ -52,8 +50,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
             Discount = discount;
             TotalAmount = totalAmount;
         }
-
-        // Construtor parameterless (MongoDB)
+        
         public SalesCartItem() { }
     }
 }

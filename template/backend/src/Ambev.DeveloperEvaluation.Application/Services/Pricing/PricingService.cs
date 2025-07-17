@@ -11,35 +11,54 @@ namespace Ambev.DeveloperEvaluation.Application.Services.Pricing
     public class PricingService : IPricingService
     {
 
+        private const int CategoryQuantityLimit = 20;      
+        
         /// <summary>
         /// Aplica desconto baseado na quantidade seguindo as regras de negócio
         /// </summary>
-        public IEnumerable<SalesCartItem> ApplyQuantityDiscounts(IEnumerable<SalesCartItem> items)
+        public decimal ValidateQuantityAndApplyDiscounts(IEnumerable<SalesCartItem> items)
         {
+
+            decimal fullAmmount = 0;
+            decimal fullCartAmmout = 0;
+            var groupCategory = IsCategoryQuantityAllowed(items);           
 
             foreach (var item in items)
             {
-                IsQuantityAllowed(item.Quantity);
+                decimal discountPercentage = CalculateDiscountPercentage(groupCategory[item.ProductCategory]);
+                fullAmmount = item.UnitPrice * item.Quantity;
+                item.Discount = fullAmmount * discountPercentage;
+                item.TotalAmount = fullAmmount - item.Discount;
 
-                decimal discountPercentage = CalculateDiscountPercentage(item.Quantity);
-                item.TotalAmount = item.UnitPrice * item.Quantity;
-                item.Discount = item.TotalAmount * discountPercentage;
+                fullCartAmmout += item.TotalAmount;
             }
 
-            return items;            
+            return fullCartAmmout;
         }
 
         /// <summary>
-        /// Valida as regras de negócio para quantidade
+        /// Valida as regras de negócio para quantidade da categoru
         /// </summary>
-        private static void IsQuantityAllowed(int quantity)
+        private Dictionary<string, int> IsCategoryQuantityAllowed(IEnumerable<SalesCartItem> items)
         {
-            if (quantity <= 0)
-                throw new ArgumentException("Quantity must be greater than zero");
+            var itemByCategory = items.GroupBy(i => i.ProductCategory);
+            var result = new Dictionary<string, int>();
 
-            if (quantity > 20)
-                throw new InvalidOperationException("It's not possible to sell above 20 identical items");
-        }
+            foreach (var categoryGroup in itemByCategory)
+            {
+                var totalQtdeByCategory = categoryGroup.Sum(i => i.Quantity);
+                result.Add(categoryGroup.Key, totalQtdeByCategory);
+
+                if (totalQtdeByCategory > CategoryQuantityLimit)
+                {
+                    throw new InvalidOperationException(
+                      $"It's not possible to sell above {CategoryQuantityLimit} items per category. " +
+                      $"Category '{categoryGroup.Key}' has {totalQtdeByCategory} items.");
+                }
+            }
+
+            return result;
+        }      
 
         /// <summary>
         /// Calcula a porcentagem de desconto baseado na quantidade

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ambev.DeveloperEvaluation.Application.SalesCart.CreateSalesCart
 {
-    public class SalesCartItemCommand
+    public class CreateSalesCartItemCommand
     {
         public Guid ProductId { get; set; }
         public int Quantity { get; set; }

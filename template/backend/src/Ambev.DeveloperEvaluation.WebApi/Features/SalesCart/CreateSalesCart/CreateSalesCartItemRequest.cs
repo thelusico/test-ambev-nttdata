@@ -6,7 +6,7 @@
     /// ProductTitle e ProductCategory serão denormalizados do Product domain
     /// Discount será 0 por padrão (pode ser aplicado posteriormente)
     /// </summary>
-    public class SalesCartItemRequest
+    public class CreateSalesCartItemRequest
     {
         public Guid ProductId { get; set; }    
         public int Quantity { get; set; }

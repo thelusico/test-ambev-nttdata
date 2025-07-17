@@ -13,6 +13,6 @@ namespace Ambev.DeveloperEvaluation.Application.SalesCart.CreateSalesCart
     {
         public Guid Customer { get; set; }
         public Guid Branch { get; set; }          
-        public List<SalesCartItemCommand> Items { get; set; }
+        public List<CreateSalesCartItemCommand> Items { get; set; }
     }
 }

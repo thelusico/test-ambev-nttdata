@@ -2,8 +2,8 @@
 {
     public class CreateSalesCartRequest
     {
-        public CustomerInfoRequest Customer { get; set; } = new();
-        public BranchInfoRequest Branch { get; set; } = new();
-        public List<SalesCartItemRequest> Items { get; set; } = new();
+        public Guid Customer { get; set; } = new();
+        public Guid Branch { get; set; } = new();
+        public List<CreateSalesCartItemRequest> Items { get; set; } = new();
     }
 }
