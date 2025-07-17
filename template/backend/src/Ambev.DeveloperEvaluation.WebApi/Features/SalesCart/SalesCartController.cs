@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Ambev.DeveloperEvaluation.Application.SalesCart.CreateSalesCart;
 using Ambev.DeveloperEvaluation.Application.SalesCart.ModifySalesCart.Results;
 using Ambev.DeveloperEvaluation.WebApi.Features.SalesCart.ModifySalesCart;
+using Ambev.DeveloperEvaluation.Application.SalesCart.ModifySalesCart;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.SalesCart
 {
@@ -109,12 +110,53 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.SalesCart
         public async Task<ActionResult<ApiResponseWithData<CreateSalesCartResult>>> ModifySalesCart(
             [FromBody] ModifySalesCartRequest request)
         {
+            try
+            {
 
+                var command = _mapper.Map<ModifySalesCartCommand>(request);               
+                var result = await _mediator.Send(command);
 
-            
-
-
+                return Created(string.Empty,
+                    new ApiResponseWithData<ModifySalesCartResult>
+                    {
+                        Success = true,
+                        Message = "Sales cart modified successfully.",
+                        Data = result,
+                    }
+                );
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new ApiResponse
+                {
+                    Message = ex.Message,
+                    Success = false,
+                });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new ApiResponse
+                {
+                    Message = ex.Message,
+                    Success = false,
+                });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new ApiResponse
+                {
+                    Message = ex.Message,
+                    Success = false,
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ApiResponse
+                {
+                    Message = "An unexpected error occurred",
+                    Success = false,
+                });
+            }
         }
-
     }
 }

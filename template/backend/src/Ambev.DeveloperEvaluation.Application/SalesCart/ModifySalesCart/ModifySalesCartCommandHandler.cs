@@ -88,7 +88,8 @@ namespace Ambev.DeveloperEvaluation.Application.SalesCart.ModifySalesCart
                 var fullCartAmmount = _pricingService.ValidateQuantityAndApplyDiscounts(items);
 
                 salesCartToModify.Items = items;
-                salesCartToModify.UpdatedAt = DateTime.Now; 
+                salesCartToModify.UpdatedAt = DateTime.Now;
+                salesCartToModify.TotalAmount = fullCartAmmount;
 
                 await _salesCartRepository.UpdateAsync(salesCartToModify);
 

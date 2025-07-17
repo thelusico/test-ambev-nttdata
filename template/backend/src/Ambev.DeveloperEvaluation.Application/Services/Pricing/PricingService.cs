@@ -19,16 +19,16 @@ namespace Ambev.DeveloperEvaluation.Application.Services.Pricing
         public decimal ValidateQuantityAndApplyDiscounts(IEnumerable<SalesCartItem> items)
         {
 
-            decimal fullAmmount = 0;
+            decimal itemFullAmmount = 0;
             decimal fullCartAmmout = 0;
             var groupCategory = IsCategoryQuantityAllowed(items);           
 
             foreach (var item in items)
             {
                 decimal discountPercentage = CalculateDiscountPercentage(groupCategory[item.ProductCategory]);
-                fullAmmount = item.UnitPrice * item.Quantity;
-                item.Discount = fullAmmount * discountPercentage;
-                item.TotalAmount = fullAmmount - item.Discount;
+                itemFullAmmount = item.UnitPrice * item.Quantity;
+                item.Discount = itemFullAmmount * discountPercentage;
+                item.TotalAmount = itemFullAmmount - item.Discount;
 
                 fullCartAmmout += item.TotalAmount;
             }
