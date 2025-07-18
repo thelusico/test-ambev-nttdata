@@ -1,6 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Products
@@ -13,7 +12,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Products
 
         public ProductsController(IProductRepository productRepository)
         {
-            _productRepository = productRepository; // Injeção automática
+            _productRepository = productRepository;
         }
 
         [HttpGet]

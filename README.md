@@ -1,86 +1,268 @@
-# Developer Evaluation Project
+# 🍺 Developer Evaluation 🍺
 
-`READ CAREFULLY`
+[![.NET](https://img.shields.io/badge/.NET-8.0-blue.svg)](https://dotnet.microsoft.com/)
+[![xUnit](https://img.shields.io/badge/Tests-xUnit-green.svg)](https://xunit.net/)
+[![Clean Architecture](https://img.shields.io/badge/Architecture-Clean-orange.svg)](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+[![CQRS](https://img.shields.io/badge/Pattern-CQRS-purple.svg)](https://docs.microsoft.com/en-us/azure/architecture/patterns/cqrs)
 
-## Instructions
-**The test below will have up to 7 calendar days to be delivered from the date of receipt of this manual.**
+Um sistema de gerenciamento de vendas desenvolvido como parte do processo de avaliação técnica, implementando Clean Architecture e boas práticas de desenvolvimento.
 
-- The code must be versioned in a public Github repository and a link must be sent for evaluation once completed
-- Upload this template to your repository and start working from it
-- Read the instructions carefully and make sure all requirements are being addressed
-- The repository must provide instructions on how to configure, execute and test the project
-- Documentation and overall organization will also be taken into consideration
+## 🎯 Sobre o Projeto
 
-## Use Case
-**You are a developer on the DeveloperStore team. Now we need to implement the API prototypes.**
+O **Developer Evaluation** é um sistema de gestão de vendas que permite:
 
-As we work with `DDD`, to reference entities from other domains, we use the `External Identities` pattern with denormalization of entity descriptions.
+- **Gerenciamento de Usuários**: Cadastro, autenticação e autorização
+- **Gestão de Produtos**: Catálogo de produtos com categorias e preços
+- **Carrinho de Compras**: Sistema de vendas com aplicação de descontos
 
-Therefore, you will write an API (complete CRUD) that handles sales records. The API needs to be able to inform:
+## 🏗️ Arquitetura
 
-* Sale number
-* Date when the sale was made
-* Customer
-* Total sale amount
-* Branch where the sale was made
-* Products
-* Quantities
-* Unit prices
-* Discounts
-* Total amount for each item
-* Cancelled/Not Cancelled
+O projeto segue os princípios da **Clean Architecture**, garantindo:
 
-It's not mandatory, but it would be a differential to build code for publishing events of:
-* SaleCreated
-* SaleModified
-* SaleCancelled
-* ItemCancelled
+- ✅ **Separação de Responsabilidades**
+- ✅ **Independência de Frameworks**
+- ✅ **Testabilidade**
+- ✅ **Flexibilidade e Manutenibilidade**
 
-If you write the code, **it's not required** to actually publish to any Message Broker. You can log a message in the application log or however you find most convenient.
+### Camadas da Aplicação
 
-### Business Rules
+```
+📁 src/
+├── 🎯 Ambev.DeveloperEvaluation.Domain/          # Entidades e Regras de Negócio
+├── 🔧 Ambev.DeveloperEvaluation.Application/     # Casos de Uso e CQRS
+├── 🗄️ Ambev.DeveloperEvaluation.Infrastructure/  # Persistência e Serviços Externos
+├── 🌐 Ambev.DeveloperEvaluation.WebApi/          # Controllers e Endpoints
+└── 🧪 Ambev.DeveloperEvaluation.Tests/           # Testes Unitários e Integração
+```
 
-* Purchases above 4 identical items have a 10% discount
-* Purchases between 10 and 20 identical items have a 20% discount
-* It's not possible to sell above 20 identical items
-* Purchases below 4 items cannot have a discount
+## 🚀 Tecnologias
 
-These business rules define quantity-based discounting tiers and limitations:
+### Backend
+- **[.NET 8](https://dotnet.microsoft.com/)** - Framework principal
+- **[ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/)** - Web API
+- **[Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/)** - ORM
+- **[MediatR](https://github.com/jbogard/MediatR)** - Implementação do padrão CQRS
+- **[AutoMapper](https://automapper.org/)** - Mapeamento de objetos
+- **[FluentValidation](https://fluentvalidation.net/)** - Validação de dados
 
-1. Discount Tiers:
-   - 4+ items: 10% discount
-   - 10-20 items: 20% discount
+### Banco de Dados
+- **[PostgreSQL](https://www.postgresql.org/)** - Auth Usuários
+- **[MongoDB](https://www.mongodb.com/docs/drivers/csharp/current/)** - Persistencia de Vendas (SalesCart)
 
-2. Restrictions:
-   - Maximum limit: 20 items per product
-   - No discounts allowed for quantities below 4 items
+### Testes
+- **[xUnit](https://xunit.net/)** - Framework de testes
+- **[NSubstitute](https://nsubstitute.github.io/)** - Mocking
+- **[FluentAssertions](https://fluentassertions.com/)** - Assertions expressivas
+- **[Bogus](https://github.com/bchavez/Bogus)** - Geração de dados fake
 
-## Overview
-This section provides a high-level overview of the project and the various skills and competencies it aims to assess for developer candidates. 
+### Documentação
+- **[Swagger/OpenAPI](https://swagger.io/)** - Documentação da API
+- **[Serilog](https://serilog.net/)** - Logging estruturado
 
-See [Overview](/.doc/overview.md)
+## 📂 Estrutura do Projeto
 
-## Tech Stack
-This section lists the key technologies used in the project, including the backend, testing, frontend, and database components. 
+```
+*.DeveloperEvaluation/
+├── 📁 src/
+│   ├── 🎯 Domain/
+│   │   ├── Entities/          # User, Product, SalesCart, Branch
+│   │   ├── ValueObjects/      # CustomerInfo, BranchInfo, SalesCartItem
+│   │   ├── Enums/            # UserStatus, UserRole, ProductCategory
+│   │   ├── Repositories/     # Interfaces dos repositórios
+│   │   └── Services/         # Interfaces dos serviços de domínio
+│   │
+│   ├── 🔧 Application/
+│   │   ├── Users/            # CreateUser, GetUser, UpdateUser, DeleteUser
+│   │   ├── SalesCart/        # CreateSalesCart, GetSalesCart
+│   │   ├── Products/         # Gerenciamento de produtos
+│   │   └── Common/           # DTOs, Validators, Behaviors
+│   │
+│   ├── 🗄️ Infrastructure/
+│   │   ├── Data/             # DbContext, Configurations, Migrations
+│   │   ├── Repositories/     # Implementações dos repositórios
+│   │   ├── Services/         # Implementações dos serviços
+│   │   └── Security/         # Hash de senhas, JWT
+│   │
+│   └── 🌐 WebApi/
+│       ├── Controllers/      # UsersController, SalesCartController
+│       ├── Middleware/       # Error handling, Logging
+│       └── Configuration/    # DI, Swagger, Database
+│
+└── 📁 tests/
+    ├── 🧪 Unit/
+    │   ├── Application/      # Testes dos handlers
+    │   ├── Domain/          # Testes das entidades
+    │   └── TestData/        # Geradores de dados fake
+    │
+    └── 🔧 Integration/
+        └── WebApi/          # Testes de API
+```
 
-See [Tech Stack](/.doc/tech-stack.md)
+## ⚡ Funcionalidades
 
-## Frameworks
-This section outlines the frameworks and libraries that are leveraged in the project to enhance development productivity and maintainability. 
+### 👥 Gestão de Usuários
+- [x] Criar usuário com validação
+- [x] Autenticação e autorização
+- [x] Atualização de dados
+- [x] Desativação de conta
+- [x] Hash seguro de senhas
 
-See [Frameworks](/.doc/frameworks.md)
+### 🛒 Sistema de Vendas
+- [x] Criar carrinho de compras
+- [x] Modificar carrinho de compras
+- [x] Cancelar carrinho de compras
+- [x] Listar carrinho de compras
+- [x] Aplicação automática de descontos
+- [x] Geração de número único de venda
+- [x] Validação de Quantidade Max de Produtos
 
-<!-- 
-## API Structure
-This section includes links to the detailed documentation for the different API resources:
-- [API General](./docs/general-api.md)
-- [Products API](/.doc/products-api.md)
-- [Carts API](/.doc/carts-api.md)
-- [Users API](/.doc/users-api.md)
-- [Auth API](/.doc/auth-api.md)
--->
+### 📦 Gestão de Produtos
+- [x] Catálogo de produtos
+- [x] Categorização
 
-## Project Structure
-This section describes the overall structure and organization of the project files and directories. 
+## 🔧 Configuração do Ambiente
 
-See [Project Structure](/.doc/project-structure.md)
+### Pré-requisitos
+
+- [.NET 8 SDK](https://dotnet.microsoft.com/download)
+- [PostgreSQL](https://www.postgresql.org/download/) 
+- [MongoDB](https://www.mongodb.com/)
+- [Git](https://git-scm.com/)
+- IDE de sua preferência ([Visual Studio](https://visualstudio.microsoft.com/), [VS Code](https://code.visualstudio.com/), [Rider](https://www.jetbrains.com/rider/))
+
+### Variáveis de Ambiente
+
+Crie um arquivo `appsettings.Development.json` na pasta `WebApi`:
+
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=localhost;Port=5431;Database=postgres;Username=seu_username;Password=mysecretpassword;Trust Server Certificate=true"
+  },
+  "MongoDB": {
+    "ConnectionString": "localhost:1010",
+    "DatabaseName": "DevTest"
+  },
+  "Jwt": {
+    "SecretKey": "YourSuperSecretKeyForJwtTokenGenerationThatShouldBeAtLeast32BytesLong"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Error",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "AllowedHosts": "*"
+}
+```
+
+## 🚀 Como Executar
+
+### 1. Clone o repositório
+```bash
+git clone https://github.com/seu-usuario/ambev-developer-evaluation.git
+cd ambev-developer-evaluation
+```
+
+### 2. Restaure as dependências
+```bash
+dotnet restore
+```
+
+### 3. Configure o banco de dados
+```bash
+# Execute as migrations
+dotnet ef database update --project src/Ambev.DeveloperEvaluation.Infrastructure --startup-project src/Ambev.DeveloperEvaluation.WebApi
+```
+
+### 4. Execute a aplicação
+```bash
+dotnet run --project src/Ambev.DeveloperEvaluation.WebApi
+```
+
+### 5. Acesse a documentação
+- **Swagger UI**: `https://localhost:7297/swagger`
+- **API Base**: `https://localhost:7297/api`
+
+## 🧪 Testes
+
+### Executar Todos os Testes
+```bash
+dotnet test
+```
+
+### Executar Testes com Cobertura
+```bash
+dotnet test
+```
+
+### Estrutura de Testes
+
+- **📁 Unit Tests**: Testam componentes isolados usando mocks
+- **📁 Integration Tests**: Testam fluxos completos da API
+- **📁 Test Data**: Geradores de dados fake usando Bogus
+
+```csharp
+// Exemplo de teste unitário
+[Fact(DisplayName = "Given valid sales cart data When creating sales cart Then returns success response")]
+public async Task Handle_ValidRequest_ReturnsSuccessResponse()
+{
+    // Given
+    var command = CreateSalesCartHandlerTestData.GenerateValidCommand();
+    
+    // When
+    var result = await _handler.Handle(command, CancellationToken.None);
+    
+    // Then
+    result.Should().NotBeNull();
+    result.Id.Should().NotBeEmpty();
+}
+```
+
+## 📝 Padrões e Convenções
+
+### Commit Messages
+Seguimos o padrão [Conventional Commits](https://www.conventionalcommits.org/):
+
+```
+feat: add new sales cart creation endpoint
+fix: resolve user authentication issue
+docs: update API documentation
+test: add unit tests for user service
+refactor: improve error handling middleware
+```
+
+### Nomenclatura
+- **Classes**: PascalCase (`CreateUserHandler`)
+- **Métodos**: PascalCase (`GenerateValidCommand`)
+- **Propriedades**: PascalCase (`CustomerName`)
+- **Variáveis**: camelCase (`userName`)
+- **Constantes**: UPPER_CASE (`MAX_RETRY_ATTEMPTS`)
+
+### Estrutura de Handlers (CQRS)
+```csharp
+public class CreateSalesCartHandler : IRequestHandler<CreateSalesCartCommand, CreateSalesCartResult>
+{
+    // Dependencies injection
+    // Handle method implementation
+    // Logging and validation
+}
+```
+
+## 📖 Documentação da API
+
+
+```
+
+### Exemplo de Request/Response
+
+### 📞 Contato
+
+Para dúvidas sobre o projeto:
+
+- **Desenvolvedor**: Lucas Cordeiro
+- **LinkedIn**: [Clique Aqui](https://www.linkedin.com/in/lucas-cordeiro97/)
+
+---
+

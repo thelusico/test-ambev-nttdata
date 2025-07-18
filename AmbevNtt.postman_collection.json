@@ -1,0 +1,110 @@
+{
+	"info": {
+		"_postman_id": "d50a679b-0c4e-440c-93e8-4d7830b8e644",
+		"name": "AmbevNtt",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19152317"
+	},
+	"item": [
+		{
+			"name": "CreateSalesCart",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"customer\": \"91d6e609-d883-43ea-bfd0-658664749d73\",\r\n  \"branch\": \"91d6e609-d883-43ea-bfd0-658664749d73\",\r\n  \"items\": [\r\n    {\r\n      \"productId\": \"5ffb27c7-f128-4d0f-958c-98c03d8dba5d\",\r\n      \"quantity\": 10\r\n    },\r\n    {\r\n      \"productId\": \"5ffb27c7-f128-4d0f-958c-98c03d8dba5d\",\r\n      \"quantity\": 10\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7181/api/SalesCart",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7181",
+					"path": [
+						"api",
+						"SalesCart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ModifySalesCart",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"salesCartId\": \"4b9022f6-6a58-4b59-9dda-d85c85074e33\",\r\n  \"customer\": \"91d6e609-d883-43ea-bfd0-658664749d73\",\r\n  \"branch\": \"11111111-1111-1111-1111-111111111111\",\r\n  \"items\": [\r\n    {\r\n      \"productId\": \"5ffb27c7-f128-4d0f-958c-98c03d8dba5d\",\r\n      \"quantity\": 10\r\n    },\r\n    {\r\n      \"productId\": \"5ffb27c7-f128-4d0f-958c-98c03d8dba5d\",\r\n      \"quantity\": 10\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7181/api/SalesCart",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7181",
+					"path": [
+						"api",
+						"SalesCart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetSalesCart",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7181/api/SalesCart/4b9022f6-6a58-4b59-9dda-d85c85074e33",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7181",
+					"path": [
+						"api",
+						"SalesCart",
+						"4b9022f6-6a58-4b59-9dda-d85c85074e33"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteSalesCart",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7181/api/SalesCart/4b9022f6-6a58-4b59-9dda-d85c85074e34",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7181",
+					"path": [
+						"api",
+						"SalesCart",
+						"4b9022f6-6a58-4b59-9dda-d85c85074e34"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
