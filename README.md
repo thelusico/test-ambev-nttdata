@@ -459,12 +459,9 @@ DELETE /api/SalesCart/4b9022f6-6a58-4b59-9dda-d85c85074e34
 
 ```
 
-### 📞 Contato
+## 📞 Contato
 
 Para dúvidas sobre o projeto:
 
 - **Desenvolvedor**: Lucas Cordeiro
 - **LinkedIn**: [Clique Aqui](https://www.linkedin.com/in/lucas-cordeiro97/)
-
----
-
