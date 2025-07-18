@@ -457,8 +457,6 @@ DELETE /api/SalesCart/4b9022f6-6a58-4b59-9dda-d85c85074e34
 }
 ```
 
-```
-
 ## 📞 Contato
 
 Para dúvidas sobre o projeto:
