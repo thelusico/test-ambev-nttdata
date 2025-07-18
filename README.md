@@ -194,12 +194,7 @@ dotnet run --project src/Ambev.DeveloperEvaluation.WebApi
 
 ### Executar Todos os Testes
 ```bash
-dotnet test
-```
-
-### Executar Testes com Cobertura
-```bash
-dotnet test
+dotnet test tests/Ambev.DeveloperEvaluation.Unit/Ambev.DeveloperEvaluation.Unit.csproj
 ```
 
 ### Estrutura de Testes
