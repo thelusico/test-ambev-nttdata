@@ -130,7 +130,7 @@ O projeto segue os princípios da **Clean Architecture**, garantindo:
 
 ### Variáveis de Ambiente
 
-Crie um arquivo `appsettings.Development.json` na pasta `WebApi`:
+Crie um arquivo `appsettings.json` na pasta `WebApi`:
 
 ```json
 {
@@ -159,29 +159,36 @@ Crie um arquivo `appsettings.Development.json` na pasta `WebApi`:
 
 ### 1. Clone o repositório
 ```bash
-git clone https://github.com/seu-usuario/ambev-developer-evaluation.git
-cd ambev-developer-evaluation
+git clone https://github.com/thelusico/test-ambev-nttdata
+cd test-ambev-nttdata
+cd template
+cd backend
 ```
 
 ### 2. Restaure as dependências
 ```bash
-dotnet restore
+dotnet restore Ambev.DeveloperEvaluation.sln
 ```
 
-### 3. Configure o banco de dados
+### 3. Buildar o projeto
+```bash
+dotnet build Ambev.DeveloperEvaluation.sln
+```
+
+### 4. Configure o banco de dados
 ```bash
 # Execute as migrations
-dotnet ef database update --project src/Ambev.DeveloperEvaluation.Infrastructure --startup-project src/Ambev.DeveloperEvaluation.WebApi
+dotnet ef database update --project src/Ambev.DeveloperEvaluation.ORM --startup-project src/Ambev.DeveloperEvaluation.WebApi
 ```
 
-### 4. Execute a aplicação
+### 5. Execute a aplicação
 ```bash
 dotnet run --project src/Ambev.DeveloperEvaluation.WebApi
 ```
 
-### 5. Acesse a documentação
-- **Swagger UI**: `https://localhost:7297/swagger`
-- **API Base**: `https://localhost:7297/api`
+### 6. Acesse a documentação
+- **Swagger UI**: `http://localhost:5119/swagger/index.html`
+- **API Base**: `https://localhost:5119/api`
 
 ## 🧪 Testes
 
