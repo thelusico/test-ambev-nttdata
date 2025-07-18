@@ -33,8 +33,7 @@ namespace Ambev.DeveloperEvaluation.Application.SalesCart.CreateSalesCart
             ISalesCartRepository salesCartRepository,
             ISalesNumberGeneratorService salesNumberGeneratorService,
             IBranchService branchService,
-            IPricingService pricingService,
-            ILogger<CreateSalesCartCommandHandler> logger,
+            IPricingService pricingService,           
             IMapper mapper)
         {
             _productRepository = productRepository;

@@ -9,16 +9,16 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
 {
     public class SalesCart
     {
-        public Guid Id { get; private set; }
-        public string SaleNumber { get; private set; }
-        public DateTime SaleDate { get; private set; }
+        public Guid Id { get; set; }
+        public string SaleNumber { get; set; }
+        public DateTime SaleDate { get; set; }
         public CustomerInfo Customer { get; set; }
         public BranchInfo Branch { get; set; }
         public List<SalesCartItem> Items { get; set; }
         public decimal TotalAmount { get; set; }
         public bool IsCancelled { get; set; }
         public DateTime? CancelledAt { get; set; }
-        public DateTime CreatedAt { get; private set; }
+        public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
 
         public SalesCart(string saleNumber, CustomerInfo customer, BranchInfo branch, List<SalesCartItem> items)
